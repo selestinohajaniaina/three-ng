@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Mesh, PerspectiveCamera, Scene } from 'three';
+import { BufferGeometry, Line, LineBasicMaterial, Mesh, PerspectiveCamera, Scene, Vector3 } from 'three';
 import { WebGLRenderer } from 'three';
 import { MaterialService } from '../material/material.service';
 
@@ -15,6 +15,7 @@ export class SceneComponent {
   private camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   private render = new WebGLRenderer();
   private cube!: Mesh;
+  private line!: Line;
 
   constructor(private material: MaterialService) {}
   
@@ -24,10 +25,12 @@ export class SceneComponent {
     const { width, height } = sceneFrame.getBoundingClientRect();
     this.render.setSize(width, height);
 
-    this.camera.position.z = 3;
-
+    this.camera.position.set(0, 0, 10);
+    this.camera.lookAt(0, 0, 0);
     this.cube = this.material.Cube();
-    this.scene.add(this.cube);
+    this.line = this.material.Line();
+    
+    this.scene.add(this.cube, this.line);
     
     this.render.setAnimationLoop( this.animate );
   }
