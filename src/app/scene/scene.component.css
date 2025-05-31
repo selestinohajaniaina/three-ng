@@ -1,0 +1,5 @@
+.scene-window {
+    border: red solid 1px;
+    height: 90dvh;
+    overflow: hidden;
+}
