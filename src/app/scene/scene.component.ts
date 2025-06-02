@@ -27,18 +27,16 @@ export class SceneComponent {
 
     this.camera.position.set(0, 10, 10);
     this.camera.lookAt(0, 0, 0);
-    this.cube = this.material.Cube();
+    this.cube = this.material.CubePhong(1, 1, 1);
     this.line = this.material.Line();
-    
-    const gltfLoader = this.material.GltfLoader();
-    gltfLoader.load('/assets/gltf/SheenChair.glb', (obj) => {
-      this.scene.add(obj.scene);
-    });
 
     const orbitControle = this.material.OrbitControle(this.camera, this.render.domElement);
     orbitControle.update();
+
+    const ambLight = this.material.AmbiantLight(5, 5, 5);
+    const spotLight = this.material.PointLight(1, 1, 0);
     
-    this.scene.add(this.cube, this.line);
+    this.scene.add(this.cube, this.line, ambLight, spotLight);
     this.render.setAnimationLoop( this.animate );
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BoxGeometry, BufferGeometry, Camera, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, Vector3 } from 'three';
+import { BoxGeometry, BufferGeometry, Camera, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, MeshLambertMaterial, Vector3, AmbientLight, SpotLight, PointLight, MeshPhysicalMaterial, MeshPhongMaterial } from 'three';
 import { GLTFLoader, OrbitControls } from 'three/addons';
 
 @Injectable({
@@ -9,9 +9,21 @@ export class MaterialService {
 
   constructor() { }
 
-  Cube() {
-    const cubeGeometry = new BoxGeometry(1, 1, 1);
+  CubeBasic(x: number, y: number, z: number) {
+    const cubeGeometry = new BoxGeometry(x, y, z);
     const cubeMaterial = new MeshBasicMaterial({ color: 0x00ff00 });
+    return new Mesh(cubeGeometry, cubeMaterial);
+  }
+
+  CubeLambert(x: number, y: number, z: number) {
+    const cubeGeometry = new BoxGeometry(x, y, z);
+    const cubeMaterial = new MeshLambertMaterial({ color: 0x00ff00 });
+    return new Mesh(cubeGeometry, cubeMaterial);
+  }
+
+  CubePhong(x: number, y: number, z: number) {
+    const cubeGeometry = new BoxGeometry(x, y, z);
+    const cubeMaterial = new MeshPhongMaterial({ color: 0x00ff00 });
     return new Mesh(cubeGeometry, cubeMaterial);
   }
 
@@ -37,6 +49,29 @@ export class MaterialService {
 
   OrbitControle(camera: Camera, rendererDomElement: HTMLElement) {
     return new OrbitControls(camera, rendererDomElement);
+  }
+
+  AmbiantLight(x: number, y: number, z: number) {
+    const light = new AmbientLight(0x404040);
+    light.position.set(x, y, z);
+    light.lookAt(0, 0, 0);
+    light.castShadow = true;
+
+    return light;
+  }
+
+  SpotLight(x: number, y: number, z: number) {
+    const l = new SpotLight(0x404040);
+    l.position.set(x, y, z);
+    l.lookAt(0, 0, 0);
+    l.castShadow = true;
+    return l;
+  }
+
+  PointLight(x: number, y: number, z: number) {
+    const l = new PointLight(0xff0000, 1, 100);
+    l.position.set(x, y, x);
+    return l;
   }
 
 }
