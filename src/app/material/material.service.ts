@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BoxGeometry, BufferGeometry, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, Vector3 } from 'three';
+import { BoxGeometry, BufferGeometry, Camera, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, Vector3 } from 'three';
+import { GLTFLoader, OrbitControls } from 'three/addons';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,16 @@ export class MaterialService {
     points.push( new Vector3( 10, 0, 0 ) );
     points.push( new Vector3( 0, 0, -10 ) );
     points.push( new Vector3( -10, 0, 0 ) );
-
     const geometry = new BufferGeometry().setFromPoints( points );
     return new Line( geometry, material );
   }
+
+  GltfLoader() {
+    return new GLTFLoader();
+  }
+
+  OrbitControle(camera: Camera, rendererDomElement: HTMLElement) {
+    return new OrbitControls(camera, rendererDomElement);
+  }
+
 }

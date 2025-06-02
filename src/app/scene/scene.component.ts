@@ -30,8 +30,15 @@ export class SceneComponent {
     this.cube = this.material.Cube();
     this.line = this.material.Line();
     
-    this.scene.add(this.cube, this.line);
+    const gltfLoader = this.material.GltfLoader();
+    gltfLoader.load('/assets/gltf/SheenChair.glb', (obj) => {
+      this.scene.add(obj.scene);
+    });
+
+    const orbitControle = this.material.OrbitControle(this.camera, this.render.domElement);
+    orbitControle.update();
     
+    this.scene.add(this.cube, this.line);
     this.render.setAnimationLoop( this.animate );
   }
 
