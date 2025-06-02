@@ -20,6 +20,13 @@ export class MaterialService {
     points.push( new Vector3( - 10, 0, 0 ) );
     points.push( new Vector3( 0, 10, 0 ) );
     points.push( new Vector3( 10, 0, 0 ) );
+    points.push( new Vector3( 0, -10, 0 ) );
+    points.push( new Vector3( -10, 0, 0 ) );
+    points.push( new Vector3( 0, 0, 10 ) );
+    points.push( new Vector3( 10, 0, 0 ) );
+    points.push( new Vector3( 0, 0, -10 ) );
+    points.push( new Vector3( -10, 0, 0 ) );
+
     const geometry = new BufferGeometry().setFromPoints( points );
     return new Line( geometry, material );
   }

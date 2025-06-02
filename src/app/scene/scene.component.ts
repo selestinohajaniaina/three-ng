@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BufferGeometry, Line, LineBasicMaterial, Mesh, PerspectiveCamera, Scene, Vector3 } from 'three';
+import { Line, Mesh, PerspectiveCamera, Scene, Vector3 } from 'three';
 import { WebGLRenderer } from 'three';
 import { MaterialService } from '../material/material.service';
 
@@ -25,7 +25,7 @@ export class SceneComponent {
     const { width, height } = sceneFrame.getBoundingClientRect();
     this.render.setSize(width, height);
 
-    this.camera.position.set(0, 0, 10);
+    this.camera.position.set(0, 10, 10);
     this.camera.lookAt(0, 0, 0);
     this.cube = this.material.Cube();
     this.line = this.material.Line();
