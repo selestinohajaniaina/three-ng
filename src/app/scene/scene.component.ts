@@ -15,7 +15,6 @@ export class SceneComponent {
   private camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   private render = new WebGLRenderer();
   private cube!: Mesh;
-  private line!: Line;
 
   constructor(private material: MaterialService) {}
   
@@ -27,22 +26,22 @@ export class SceneComponent {
 
     this.camera.position.set(0, 10, 10);
     this.camera.lookAt(0, 0, 0);
-    this.cube = this.material.CubePhong(1, 1, 1);
-    this.line = this.material.Line();
+    this.cube = this.material.CubeLambert(1, 1, 1);
+    this.cube.position.set(0, 3, 0);
 
     const orbitControle = this.material.OrbitControle(this.camera, this.render.domElement);
     orbitControle.update();
 
     const ambLight = this.material.AmbiantLight(5, 5, 5);
-    const spotLight = this.material.PointLight(1, 1, 0);
+
+    const plan = this.material.PlanGeometry(10, 10);
+    console.log(plan.rotation.x);
     
-    this.scene.add(this.cube, this.line, ambLight, spotLight);
+    this.scene.add(this.cube, ambLight, plan);
     this.render.setAnimationLoop( this.animate );
   }
 
   animate = () => {
-    this.cube.rotation.x += 0.01;
-    this.cube.rotation.y += 0.01;
     this.render.render(this.scene, this.camera);
   }
 
