@@ -39,8 +39,9 @@ export class SceneComponent {
     SpotLight.lookAt(this.scene.position);
     this.scene.add( SpotLight );
 
-    // const rectLight = this.material.RectLight();
-    // this.scene.add( rectLight );
+    const sphere = this.material.SpherePhong(1,4, 100);
+    sphere.position.set(0, 3, 0);
+    this.scene.add( sphere );
 
     const plan = this.material.PlanGeometry(10, 10);
     this.scene.add( plan );
