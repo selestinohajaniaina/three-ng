@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BoxGeometry, BufferGeometry, Camera, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, MeshLambertMaterial, Vector3, AmbientLight, SpotLight, PointLight, MeshPhysicalMaterial, MeshPhongMaterial, SpotLightHelper, PointLightHelper, PlaneGeometry, DoubleSide, Plane, PlaneHelper, RectAreaLight, SphereGeometry } from 'three';
 import { GLTFLoader, OrbitControls, RectAreaLightHelper } from 'three/addons';
+import { ColliderDesc, RigidBodyDesc, World, Vector, Collider } from '@dimforge/rapier3d-compat';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MaterialService {
+
+  private gravity = { x: 0, y: -9.81, z: 0 };
+  public world!: World;
 
   constructor() { }
 
@@ -114,6 +118,25 @@ export class MaterialService {
   Plan() {
     const plane = new Plane( new Vector3( 10, 10, 0.2 ), 0 );
     return new PlaneHelper( plane, 10, 0xffff00 );
+  }
+
+  GenerateWorld(): World {
+    return new World(this.gravity);
+  }
+
+  BoxCollider(world: World, transl: Vector, size: Vector) {
+    const desc = this.BoxDescription(transl);
+    const body = this.BoxBody(world, desc);
+    const collider = ColliderDesc.cuboid(size.x, size.y, size.z);
+    return world.createCollider(collider, body);
+  }
+
+  BoxDescription(transl: Vector): RigidBodyDesc {
+    return RigidBodyDesc.fixed().setTranslation(transl.x, transl.y, transl.z);
+  }
+
+  BoxBody(world: World, boxDescription: RigidBodyDesc) {
+    return world.createRigidBody(boxDescription);
   }
 
 }
