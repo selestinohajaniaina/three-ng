@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BoxGeometry, BufferGeometry, Camera, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, MeshLambertMaterial, Vector3, AmbientLight, SpotLight, PointLight, MeshPhysicalMaterial, MeshPhongMaterial, SpotLightHelper, PointLightHelper, PlaneGeometry, DoubleSide, Plane, PlaneHelper, RectAreaLight, SphereGeometry } from 'three';
+import { BoxGeometry, BufferGeometry, Camera, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, MeshLambertMaterial, Vector3, AmbientLight, SpotLight, PointLight, MeshPhysicalMaterial, MeshPhongMaterial, SpotLightHelper, PointLightHelper, PlaneGeometry, DoubleSide, Plane, PlaneHelper, RectAreaLight, SphereGeometry, Scene } from 'three';
 import { GLTFLoader, OrbitControls, RectAreaLightHelper } from 'three/addons';
 import { ColliderDesc, RigidBodyDesc, World, Vector, Collider } from '@dimforge/rapier3d-compat';
 
@@ -124,19 +124,52 @@ export class MaterialService {
     return new World(this.gravity);
   }
 
-  BoxCollider(world: World, transl: Vector, size: Vector) {
-    const desc = this.BoxDescription(transl);
-    const body = this.BoxBody(world, desc);
-    const collider = ColliderDesc.cuboid(size.x, size.y, size.z);
+  ColliderFixed(world: World, transl: Vector, size: Vector) {
+    const desc = this.RigidBodyDescFixed(transl);
+    const body = this.CreateRigidBody(world, desc);
+    const collider = this.ColliderDescCube(size);
     return world.createCollider(collider, body);
   }
 
-  BoxDescription(transl: Vector): RigidBodyDesc {
+  ColliderDynamic(world: World, transl: Vector, size: Vector) {
+    const desc = this.RigidBodyDescDynamic(transl);
+    const body = this.CreateRigidBody(world, desc);
+    const collider = this.ColliderDescCube(size);
+    return world.createCollider(collider, body);
+  }
+
+  RigidBodyDescFixed(transl: Vector): RigidBodyDesc {
     return RigidBodyDesc.fixed().setTranslation(transl.x, transl.y, transl.z);
   }
 
-  BoxBody(world: World, boxDescription: RigidBodyDesc) {
+  RigidBodyDescDynamic(transl: Vector): RigidBodyDesc {
+    return RigidBodyDesc.dynamic().setTranslation(transl.x, transl.y, transl.z);
+  }
+
+  CreateRigidBody(world: World, boxDescription: RigidBodyDesc) {
     return world.createRigidBody(boxDescription);
+  }
+
+  ColliderDescCube(size: Vector) {
+    return ColliderDesc.cuboid(size.x, size.y, size.z)
+                          .setFriction(0.1)
+                          .setRestitution(0.5);
+  }
+
+  ApplyRigidBodyToCube(boxBody: any, cube: Mesh) {
+    const pos = boxBody.translation();
+    const rot = boxBody.rotation();
+    cube.position.set(pos.x, pos.y, pos.z);
+    cube.quaternion.set(rot.x, rot.y, rot.z, rot.w);
+  }
+
+  ApplyRigidBodyToCubeArray(cubeArray: {cube: Mesh, boxBody: any}[]) {
+    cubeArray.map((el) => {
+      const pos = el.boxBody.translation();
+      const rot = el.boxBody.rotation();
+      el.cube.position.set(pos.x, pos.y, pos.z);
+      el.cube.quaternion.set(rot.x, rot.y, rot.z, rot.w);
+    });
   }
 
 }
