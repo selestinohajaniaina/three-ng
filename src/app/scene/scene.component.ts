@@ -3,6 +3,7 @@ import { Clock, Color, Mesh, PerspectiveCamera, Scene, Vector3 } from 'three';
 import { WebGLRenderer } from 'three';
 import { MaterialService } from '../material/material.service';
 import { World, init, Collider, RigidBodyDesc, ColliderDesc, Vector, RigidBody } from '@dimforge/rapier3d-compat';
+import { ControlsService } from '../material/controls.service';
 
 @Component({
   selector: 'app-scene',
@@ -17,9 +18,8 @@ export class SceneComponent {
   private render = new WebGLRenderer();
   private cubeArray: {cube: Mesh, boxBody: any}[] = [];
   private world!: World;
-  private boxBodyArray: any[] = [];
 
-  constructor(private material: MaterialService) {}
+  constructor(private material: MaterialService, private controls: ControlsService) {}
   
   async ngAfterViewInit() {
     const sceneFrame = document.querySelector('.scene-window') as HTMLElement;
@@ -31,13 +31,9 @@ export class SceneComponent {
     // appliquer le physic au sol
     await init();
     this.world = this.material.GenerateWorld();
-    this.material.ColliderFixed(this.world, {x:0, y:-1, z:0}, {x: 50, y: 1, z: 50});
+    this.material.ColliderFixed(this.world, {x:0, y:-1, z:0}, {x: 5, y: 1, z: 5});
 
     this.camera.position.set(1, 1, 10);
-    this.camera.lookAt(0, 0, 0);
-
-    const orbitControle = this.material.OrbitControle(this.camera, this.render.domElement);
-    orbitControle.update();
 
     const ambLight = this.material.AmbiantLight(0, 0, 0);
     this.scene.add( ambLight );
@@ -79,6 +75,13 @@ export class SceneComponent {
 
   animate = () => {
     this.world.step();
+    if(this.cubeArray[0]) {
+      this.camera.lookAt(this.cubeArray[0].cube.position);
+      this.camera.position.copy(this.cubeArray[0].cube.position);
+      this.camera.position.z += 3;
+      this.camera.position.y += 2;
+    }
+
     this.material.ApplyRigidBodyToCubeArray(this.cubeArray);
     this.render.render(this.scene, this.camera);
   }

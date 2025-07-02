@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BoxGeometry, BufferGeometry, Camera, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, MeshLambertMaterial, Vector3, AmbientLight, SpotLight, PointLight, MeshPhysicalMaterial, MeshPhongMaterial, SpotLightHelper, PointLightHelper, PlaneGeometry, DoubleSide, Plane, PlaneHelper, RectAreaLight, SphereGeometry, Scene } from 'three';
-import { GLTFLoader, OrbitControls, RectAreaLightHelper } from 'three/addons';
+import { BoxGeometry, BufferGeometry, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, MeshLambertMaterial, Vector3, AmbientLight, SpotLight, PointLight, MeshPhysicalMaterial, MeshPhongMaterial, SpotLightHelper, PointLightHelper, PlaneGeometry, DoubleSide, Plane, PlaneHelper, RectAreaLight, SphereGeometry, Scene } from 'three';
+import { GLTFLoader, RectAreaLightHelper } from 'three/addons';
 import { ColliderDesc, RigidBodyDesc, World, Vector, Collider } from '@dimforge/rapier3d-compat';
 
 @Injectable({
@@ -61,10 +61,6 @@ export class MaterialService {
 
   GltfLoader() {
     return new GLTFLoader();
-  }
-
-  OrbitControle(camera: Camera, rendererDomElement: HTMLElement) {
-    return new OrbitControls(camera, rendererDomElement);
   }
 
   AmbiantLight(x: number, y: number, z: number) {
