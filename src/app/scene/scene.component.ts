@@ -76,10 +76,7 @@ export class SceneComponent {
   animate = () => {
     this.world.step();
     if(this.cubeArray[0]) {
-      this.camera.lookAt(this.cubeArray[0].cube.position);
-      this.camera.position.copy(this.cubeArray[0].cube.position);
-      this.camera.position.z += 3;
-      this.camera.position.y += 2;
+      this.controls.caractereCamera(this.camera, this.cubeArray[0].cube)
     }
 
     this.material.ApplyRigidBodyToCubeArray(this.cubeArray);

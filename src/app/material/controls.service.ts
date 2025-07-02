@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Camera } from 'three';
+import { Camera, Mesh } from 'three';
 import { FirstPersonControls, OrbitControls } from 'three/examples/jsm/Addons.js';
 
 @Injectable({
@@ -15,6 +15,13 @@ export class ControlsService {
 
   personControle(camera: Camera, rendererDomElement: HTMLElement) {
     return new FirstPersonControls(camera, rendererDomElement);
+  }
+
+  caractereCamera(camera: Camera, caractere: Mesh) {
+    camera.lookAt(caractere.position);
+    camera.position.copy(caractere.position);
+    camera.position.z += 3;
+    camera.position.y += 2;
   }
 
 }
