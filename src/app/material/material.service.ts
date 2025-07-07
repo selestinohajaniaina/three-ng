@@ -19,9 +19,9 @@ export class MaterialService {
     return new Mesh(cubeGeometry, cubeMaterial);
   }
 
-  CubeLambert(x: number, y: number, z: number) {
+  CubeLambert(x: number, y: number, z: number, color: any = 0xffff00) {
     const cubeGeometry = new BoxGeometry(x, y, z);
-    const cubeMaterial = new MeshLambertMaterial({ color: 0xffff00 });
+    const cubeMaterial = new MeshLambertMaterial({ color: color });
     return new Mesh(cubeGeometry, cubeMaterial);
   }
 
@@ -147,7 +147,7 @@ export class MaterialService {
   }
 
   ColliderDescCube(size: Vector) {
-    return ColliderDesc.cuboid(size.x, size.y, size.z)
+    return ColliderDesc.cuboid(size.x / 2, size.y / 2, size.z / 2)
                           .setFriction(0.1)
                           .setRestitution(0.5);
   }
